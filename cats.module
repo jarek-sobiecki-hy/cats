@@ -1,0 +1,58 @@
+<?php
+/**
+ * @file
+ * Cats, cats everywhere...
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function cats_menu() {
+  return [
+    'furry-love' => [
+      'page callback' => '_cats_page_callback',
+      'access callback' => '_cats_page_access',
+    ],
+  ];
+}
+
+/**
+ * Implementation of page callback for /furry-love.
+ */
+function _cats_page_callback() {
+  return [
+    '#markup' => '<img src="http://thecatapi.com/api/images/get?format=src&type=gif" />',
+  ];
+}
+
+/**
+ * Implementation of access callback for /furry-love
+ */
+function _cats_page_access() {
+  return TRUE;
+}
+
+
+/**
+ * Implements hook_block_info().
+ */
+function cats_block_info() {
+  return [
+    'cats' => [
+      'info' => t('Block with random cat.'),
+    ]
+  ];
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function cats_block_view($delta) {
+  switch ($delta) {
+    case 'cats':
+      return [
+        'content' => '<img src="http://thecatapi.com/api/images/get?format=src&type=gif" />',
+        'subject' => t('Cats'),
+      ];
+  }
+}
