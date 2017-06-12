@@ -16,12 +16,25 @@ function cats_menu() {
   ];
 }
 
+
+/**
+ * Implements hook_theme().
+ */
+function cats_theme() {
+  return [
+    'cat_image' => [
+      'variables' => ['url' => NULL],
+      'template' => 'cat_image',
+    ],
+  ];
+}
+
 /**
  * Implementation of page callback for /furry-love.
  */
 function _cats_page_callback() {
   return [
-    '#markup' => '<img src="http://thecatapi.com/api/images/get?format=src&type=gif" />',
+    '#markup' => theme('cat_image', ['url' => 'http://thecatapi.com/api/images/get?format=src&type=gif']),
   ];
 }
 
@@ -55,4 +68,18 @@ function cats_block_view($delta) {
         'subject' => t('Cats'),
       ];
   }
+}
+
+
+/**
+ * Implements hook_preprocess().
+ */
+function cats_preprocess(&$variables, $hook) {
+  if ($hook == 'cat_image') {
+    drupal_add_js(
+      drupal_get_path('module', 'cats') . '/cats.js'
+    );
+  };
+
+  return $variables;
 }
